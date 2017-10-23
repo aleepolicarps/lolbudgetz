@@ -77,7 +77,7 @@
                 'data-name': 'Payment page',
                 'data-key': maxpay.publicKey,
                 'data-signature': maxpay.signature,
-                'data-uniqueuserid': maxpay.uniq_user_id,
+                'data-uniqueuserid': maxpay.unique_user_id,
                 'data-locale': maxpay.locale,
                 'data-email': $('#emailAddress').val(),
                 'data-firstname': $('#firstName').val(),
@@ -114,7 +114,7 @@
                 email_address: $('#emailAddress').val()
             },
             success: function(data) {
-                maxpay.uniq_user_id = data.register_attempt_id;
+                maxpay.unique_user_id = data.unique_user_id;
                 emailAvailable = true;
             },
             error: function(response) {

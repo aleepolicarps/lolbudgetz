@@ -73,6 +73,13 @@ class RegisterController extends Controller
     }
 
     public function attempt_register(Request $request) {
+        $attempt = new RegisterAttempt;
+        $attempt->first_name = $request->input('first_name');
+        $attempt->last_name = $request->input('last_name');
+        $attempt->email_address = $request->input('email_address');
+        $attempt->uuid = uniqid('user', true);
+        $attempt->save();
+
         $user = User::where('email', $request->input('email_address'))->first();
         if($user) {
             return response()->json([
@@ -89,15 +96,9 @@ class RegisterController extends Controller
             ], 403);
         }
 
-        $attempt = new RegisterAttempt;
-        $attempt->first_name = $request->input('first_name');
-        $attempt->last_name = $request->input('last_name');
-        $attempt->email_address = $request->input('email_address');
-        $attempt->save();
-
         return response()->json([
             'status' => 'success',
-            'register_attempt_id' => $attempt->id
+            'unique_user_id' => $attempt->uuid
         ]);
     }
 }
