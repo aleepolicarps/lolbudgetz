@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Blacklist;
+use App\RegisterAttempt;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -66,6 +69,35 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+        ]);
+    }
+
+    public function attempt_register(Request $request) {
+        $user = User::where('email', $request->input('email_address'))->first();
+        if($user) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'The email you provided is already associated to an account.'
+            ], 400);
+        }
+
+        $blacklist = Blacklist::where('email_address', $request->input('email_address'))->first();
+        if($blacklist) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'You are forbidden to signup to this website.'
+            ], 403);
+        }
+
+        $attempt = new RegisterAttempt;
+        $attempt->first_name = $request->input('first_name');
+        $attempt->last_name = $request->input('last_name');
+        $attempt->email_address = $request->input('email_address');
+        $attempt->save();
+
+        return response()->json([
+            'status' => 'success',
+            'register_attempt_id' => $attempt->id
         ]);
     }
 }

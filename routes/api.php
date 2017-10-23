@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('webid/{publc_id}', 'WebIdController@get');
+Route::post('attempt-register', 'Auth\RegisterController@attempt_register');

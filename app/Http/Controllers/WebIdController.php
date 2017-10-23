@@ -16,7 +16,8 @@ class WebIdController extends Controller
 
         return response()->json([
             'public_key' => env('MAXPAY_PUBLIC_KEY'),
-            'product_id' => $web_id->trial_product_id
+            'product_id' => $web_id->trial_product_id,
+            'locale' => $web_id->locale
          ]);
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5eba86da256ddeb8084c32d3d10e18d3",
+    "content-hash": "3c50dfe47e5b90bd8e601aaa7b982870",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -680,6 +680,58 @@
                 "storage"
             ],
             "time": "2017-08-06T17:41:04+00:00"
+        },
+        {
+            "name": "maxpay/hpp-client",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maxpay/php-hpp-client.git",
+                "reference": "6c1f89cbc016f921e0a332f5651385f2dc9eafd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maxpay/php-hpp-client/zipball/6c1f89cbc016f921e0a332f5651385f2dc9eafd1",
+                "reference": "6c1f89cbc016f921e0a332f5651385f2dc9eafd1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.4",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "1.5.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maxpay\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maxpay team",
+                    "homepage": "https://github.com/maxpay"
+                }
+            ],
+            "description": "Maxpay PHP Library",
+            "homepage": "https://maxpay.com/",
+            "keywords": [
+                "maxpay",
+                "psp"
+            ],
+            "time": "2017-08-14T09:40:12+00:00"
         },
         {
             "name": "monolog/monolog",
