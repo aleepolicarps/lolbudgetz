@@ -3,7 +3,7 @@
 @section('title', 'Sign Up')
 
 @section('body_content')
-    <div class="jumbotron text-center">
+    <div class="jumbotron text-center" style="background:none;">
       <h1>Piggy Budget</h1>
       <p>Sign the fuck up to budget your shit!</p>
     </div>
