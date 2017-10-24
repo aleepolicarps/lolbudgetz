@@ -3,7 +3,7 @@
 @section('title', 'Sign up failed')
 
 @section('body_content')
-    <div class="jumbotron text-center" style="background:none;">
+    <div class="jumbotron text-center">
       <h1>Sign up failed :(</h1>
       <p>Redirecting you to the signup page ...</p>
     </div>
