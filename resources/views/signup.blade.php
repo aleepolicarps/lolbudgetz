@@ -114,7 +114,7 @@
                 email_address: $('#emailAddress').val()
             },
             success: function(data) {
-                maxpay.unique_user_id = data.unique_user_id;
+                maxpay.unique_user_id = data.uuid;
                 emailAvailable = true;
             },
             error: function(response) {

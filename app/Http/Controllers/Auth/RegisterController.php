@@ -72,7 +72,8 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function attempt_register(Request $request) {
+    public function attempt_register(Request $request)
+    {
         $attempt = new RegisterAttempt;
         $attempt->first_name = $request->input('first_name');
         $attempt->last_name = $request->input('last_name');
@@ -98,7 +99,13 @@ class RegisterController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'unique_user_id' => $attempt->uuid
+            'uuid' => $attempt->uuid
         ]);
+    }
+
+    public function show_complete_signup($uuid)
+    {
+        // TODO: check if can complete
+        return view('complete_signup');
     }
 }
