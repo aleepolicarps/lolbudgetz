@@ -7,6 +7,7 @@ use App\RegisterAttempt;
 use App\SaleTransaction;
 use App\User;
 use App\Http\Controllers\Controller;
+use App\Services\UserSubscriptionsHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -32,15 +33,17 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    private $user_subscription_handler;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserSubscriptionsHandler $user_subscription_handler)
     {
         $this->middleware('guest');
+        $this->user_subscription_handler = $user_subscription_handler;
     }
 
     /**
@@ -83,6 +86,8 @@ class RegisterController extends Controller
         $user->uuid = $register_attempt->uuid;
         $user->password = bcrypt($request->input('password'));
         $user->save();
+
+        $this->user_subscription_handler->start_user_trial($user);
 
         return response()->json([
             'status' => 'success'

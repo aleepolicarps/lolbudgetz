@@ -10,7 +10,13 @@ class SaleTransaction extends Model
         'raw_response' => 'array'
     ];
 
-    public function is_successful() {
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
+    public function is_successful()
+    {
         return $this->status == 'success';
     }
 }

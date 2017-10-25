@@ -13,9 +13,9 @@ class PaymentsController extends Controller
     private $sale_transactions_logger;
     private $maxpay_helper;
 
-    public function __construct()
+    public function __construct(SaleTransactionsLogger $sale_transactions_logger)
     {
-        $this->sale_transactions_logger = new SaleTransactionsLogger();
+        $this->sale_transactions_logger = $sale_transactions_logger;
         $this->maxpay_helper = new \Maxpay\Scriney(env('MAXPAY_PUBLIC_KEY'), env('MAXPAY_SECRET_KEY'));
     }
 
