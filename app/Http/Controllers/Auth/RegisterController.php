@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Blacklist;
 use App\RegisterAttempt;
+use App\SaleTransaction;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -57,20 +58,36 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
+    public function complete_signup(Request $request)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+        $uuid = $request->input('uuid');
+
+        if(User::where('uuid', $uuid)->first()) {
+            abort(400, 'You have already completed your signup. Please login to check your account');
+        }
+
+        $register_attempt = RegisterAttempt::where('uuid', $uuid)->first();
+        if(!$register_attempt) {
+            abort(403, 'This URL is invalid. You have not yet signed up');
+        }
+
+        $sale_transaction = SaleTransaction::where('uuid', $uuid)->first();
+        if(!$sale_transaction or !$sale_transaction->is_successful()) {
+            abort(400, 'Please complete your payment.');
+        }
+
+        $user = new User;
+        $user->first_name = $register_attempt->first_name;
+        $user->last_name = $register_attempt->last_name;
+        $user->email_address = $register_attempt->email_address;
+        $user->uuid = $register_attempt->uuid;
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+
+        return response()->json([
+            'status' => 'success'
         ]);
-    }
+     }
 
     public function attempt_register(Request $request)
     {
@@ -81,7 +98,7 @@ class RegisterController extends Controller
         $attempt->uuid = uniqid('user', true);
         $attempt->save();
 
-        $user = User::where('email', $request->input('email_address'))->first();
+        $user = User::where('email_address', $request->input('email_address'))->first();
         if($user) {
             return response()->json([
                 'status' => 'failed',
@@ -105,7 +122,22 @@ class RegisterController extends Controller
 
     public function show_complete_signup($uuid)
     {
-        // TODO: check if can complete
-        return view('complete_signup');
+        if(User::where('uuid', $uuid)->first()) {
+            abort(400, 'You have already completed your signup. Please login to check your account');
+        }
+
+        $register_attempt = RegisterAttempt::where('uuid', $uuid)->first();
+        if(!$register_attempt) {
+            abort(403, 'This URL is invalid. You have not yet signed up');
+        }
+
+        $sale_transaction = SaleTransaction::where('uuid', $uuid)->first();
+        if(!$sale_transaction or !$sale_transaction->is_successful()) {
+            abort(400, 'Please complete your payment.');
+        }
+
+        return view('complete_signup', [
+            'register_attempt' => $register_attempt
+        ]);
     }
 }
