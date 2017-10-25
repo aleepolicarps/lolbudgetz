@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SignupSuccessful;
+use App\RegisterAttempt;
 use App\Services\SaleTransactionsLogger;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentsController extends Controller
 {
@@ -35,7 +38,10 @@ class PaymentsController extends Controller
         }
 
         $sale_transaction = $this->sale_transactions_logger->save_from_callback($callback_params);
-        // TODO: send invoice to email containing transaction details and signup link
+        $register_attempt = RegisterAttempt::where('uuid', $sale_transaction->uuid)->first();
+        Mail::to($register_attempt->email_address)
+            ->send(new SignupSuccessful($register_attempt));
+
         return view('successful_signup');
     }
 }
