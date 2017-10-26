@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\WebId;
 use App\Mail\SignupSuccessful;
 use App\RegisterAttempt;
 use App\Services\SaleTransactionsLogger;
