@@ -20,3 +20,6 @@ Route::get('signup', function() {
 });
 
 Route::get('complete-signup/{uuid}', 'Auth\RegisterController@show_complete_signup')->name('complete_signup');
+Route::get('successful-signup', function() {
+    return view('successful_signup');
+});

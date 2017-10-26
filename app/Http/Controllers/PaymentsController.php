@@ -43,6 +43,7 @@ class PaymentsController extends Controller
         Mail::to($register_attempt->email_address)
             ->send(new SignupSuccessful($register_attempt));
 
-        return view('successful_signup');
+        $web_id = WebId::find($sale_transaction->web_id);
+        return redirect($web_id->return_url);
     }
 }
