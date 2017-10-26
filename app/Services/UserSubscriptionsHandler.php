@@ -6,6 +6,8 @@ use App\WebId;
 use App\SaleTransaction;
 use App\UserSubscription;
 use App\Enums\BillingPeriod;
+use App\Mail\RebillFailed;
+use Illuminate\Support\Facades\Mail;
 
 class UserSubscriptionsHandler
 {
@@ -63,6 +65,11 @@ class UserSubscriptionsHandler
         } else {
             $user_subscription->waitlist = true;
             $user_subscription->next_charge_date = $this->compute_waitlist_next_charge_date($rebill_transaction->created_at);
+
+            // NOTIFY USER ABOUT FAILED TRANSACTION
+            $user = $user_subscription->user()->first();
+            Mail::to($user->email_address)
+                ->send(new RebillFailed());
         }
 
         $user_subscription->last_charge_date = $rebill_transaction->created_at;
