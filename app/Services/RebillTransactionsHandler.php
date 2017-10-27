@@ -25,7 +25,7 @@ class RebillTransactionsHandler
         try {
             $result = $this->maxpay_helper->createRebillRequest($user_subscription->bill_token, $user->uuid)
                 ->setProductId($web_id->product_id)
-                ->setUserInfo(new UserInfo($user->email_address, $user->first_name, $user->last_name))
+                ->setUserInfo(new UserInfo($user->email, $user->first_name, $user->last_name))
                 ->send();
         } catch (\Maxpay\Lib\Exception\GeneralMaxpayException $e) {
             throw new PaymentException('Unknown error occurred');

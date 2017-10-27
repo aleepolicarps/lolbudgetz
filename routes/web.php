@@ -23,3 +23,7 @@ Route::get('complete-signup/{uuid}', 'Auth\RegisterController@show_complete_sign
 Route::get('successful-signup', function() {
     return view('successful_signup');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

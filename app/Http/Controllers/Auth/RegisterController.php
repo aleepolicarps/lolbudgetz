@@ -82,7 +82,7 @@ class RegisterController extends Controller
         $user = new User;
         $user->first_name = $register_attempt->first_name;
         $user->last_name = $register_attempt->last_name;
-        $user->email_address = $register_attempt->email_address;
+        $user->email = $register_attempt->email_address;
         $user->uuid = $register_attempt->uuid;
         $user->password = bcrypt($request->input('password'));
         $user->save();
@@ -103,7 +103,7 @@ class RegisterController extends Controller
         $attempt->uuid = uniqid('user', true);
         $attempt->save();
 
-        $user = User::where('email_address', $request->input('email_address'))->first();
+        $user = User::where('email', $request->input('email_address'))->first();
         if($user) {
             return response()->json([
                 'status' => 'failed',

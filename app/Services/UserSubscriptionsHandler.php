@@ -69,7 +69,7 @@ class UserSubscriptionsHandler
 
             // NOTIFY USER ABOUT FAILED TRANSACTION
             $user = $user_subscription->user()->first();
-            Mail::to($user->email_address)
+            Mail::to($user->email)
                 ->send(new RebillFailed());
         }
 

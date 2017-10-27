@@ -48,7 +48,7 @@ class CancelSubscription extends Command
         $email_address = $this->argument('email_address');
         $force = $this->option('force');
 
-        $user = User::where('email_address', $email_address)->first();
+        $user = User::where('email', $email_address)->first();
 
         if(!$email_address) {
             echo "User with email:{$email_address} does not exist.\n";
