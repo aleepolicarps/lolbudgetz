@@ -12,6 +12,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script>
+        window.BASE_URL = "{{ url('/') }}";
+    </script>
 </head>
 <body>
     <div id="app">
@@ -76,5 +79,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    @yield('custom_script')
 </body>
 </html>
