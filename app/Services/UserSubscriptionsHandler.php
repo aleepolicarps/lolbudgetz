@@ -7,6 +7,7 @@ use App\SaleTransaction;
 use App\UserSubscription;
 use App\Enums\BillingPeriod;
 use App\Mail\RebillFailed;
+use App\Mail\SubscriptionCancelled;
 use App\Exceptions\SubscriptionException;
 use Illuminate\Support\Facades\Mail;
 
@@ -69,7 +70,7 @@ class UserSubscriptionsHandler
 
             // NOTIFY USER ABOUT FAILED TRANSACTION
             $user = $user_subscription->user()->first();
-            Mail::to($user->email)
+            Mail::to($user->email_address)
                 ->send(new RebillFailed());
         }
 
@@ -93,6 +94,10 @@ class UserSubscriptionsHandler
 
         $user_subscription->active = false;
         $user_subscription->save();
+
+        $user = $user_subscription->user()->first();
+        Mail::to($user->email_address)
+            ->send(new SubscriptionCancelled());
 
         return $user_subscription;
     }
