@@ -48,6 +48,7 @@ class RebillSubscriptions extends Command
         echo "Rebilling first {$count} users ... \n";
 
         $user_subscriptions = UserSubscription::where('next_charge_date', '>=', date('Y-m-d H:i:s'))
+            ->where('active', true)
             ->take($count)
             ->get();
 
