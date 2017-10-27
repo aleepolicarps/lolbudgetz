@@ -7,6 +7,7 @@ use App\SaleTransaction;
 use App\UserSubscription;
 use App\Enums\BillingPeriod;
 use App\Mail\RebillFailed;
+use App\Exceptions\SubscriptionException;
 use Illuminate\Support\Facades\Mail;
 
 class UserSubscriptionsHandler
@@ -76,6 +77,29 @@ class UserSubscriptionsHandler
         $user_subscription->save();
 
         return $user_subscription;
+    }
+
+    public function cancel($user_subscription, $ignore_delay = false)
+    {
+        $web_id = WebId::find($user_subscription->web_id);
+        if(!$ignore_delay && $this->compute_allowed_usubscribe_date($user_subscription->created_at, $web_id) > date(self::DATE_FORMAT)) {
+            throw new SubscriptionException("You cannot unsubscibe yet! Please wait {$web_id->unsubscribe_delay} hours after your subscription has started.");
+        }
+
+        if($user_subscription->trial) {
+            $user_subscription->trial = false;
+            $user_subscription->end_trial_date = date(self::DATE_FORMAT);
+        }
+
+        $user_subscription->active = false;
+        $user_subscription->save();
+
+        return $user_subscription;
+    }
+
+    public function compute_allowed_usubscribe_date($start_date, $web_id)
+    {
+        return date(self::DATE_FORMAT, strtotime($start_date . "+{$web_id->unsubscribe_delay} hours"));
     }
 
     private function compute_end_of_trial($start_date, $web_id)

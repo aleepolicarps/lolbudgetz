@@ -31,7 +31,7 @@ class User extends Authenticatable
 
     public function user_subscription()
     {
-        $this->hasOne('App\UserSubscription');
+        return $this->hasOne('App\UserSubscription');
     }
 
     public function getNameAttribute()

@@ -21,7 +21,7 @@ class RebillSubscriptions extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Rebill users';
 
     /**
      * Create a new command instance.
