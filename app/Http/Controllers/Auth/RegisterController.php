@@ -46,6 +46,10 @@ class RegisterController extends Controller
         $this->user_subscription_handler = $user_subscription_handler;
     }
 
+    public function showRegistrationForm() {
+        return redirect(route('signup'));
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *

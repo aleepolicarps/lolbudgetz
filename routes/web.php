@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::get('signup', function() {
     return view('signup');
-});
+})->name('signup');
 
 Route::get('complete-signup/{uuid}', 'Auth\RegisterController@show_complete_signup')->name('complete_signup');
 Route::get('successful-signup', function() {
