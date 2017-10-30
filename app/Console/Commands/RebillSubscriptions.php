@@ -45,19 +45,24 @@ class RebillSubscriptions extends Command
     public function handle()
     {
         $count = $this->argument('count');
-        echo "Rebilling first {$count} users ... \n";
+        echo "Start at ". date('Y-m-d H:i:s')."\n";
+        echo "\tRebilling first {$count} users ... \n";
 
-        $user_subscriptions = UserSubscription::where('next_charge_date', '>=', date('Y-m-d H:i:s'))
+        $user_subscriptions = UserSubscription::where('next_charge_date', '<=', date('Y-m-d H:i:s'))
             ->where('active', true)
             ->take($count)
             ->get();
+
+        if($user_subscriptions->isEmpty()) {
+            echo "\t No users due for billing. \n";
+        }
 
         $total = count($user_subscriptions);
         $current_count = 1;
         foreach ($user_subscriptions as $user_subscription) {
             $user = $user_subscription->user()->first();
             $web_id = WebId::find($user_subscription->web_id);
-            echo "{$current_count} out of {$total}: \t Charging {$user->name} with {$web_id->amount} ...\n";
+            echo "\t{$current_count} out of {$total}: \t Charging {$user->name} with {$web_id->amount} ...\n";
             try {
                 $updated_subscription = $this->user_subscription_handler->update_regular_subscription($user_subscription);
 
@@ -71,5 +76,6 @@ class RebillSubscriptions extends Command
             }
             $current_count++;
         }
+        echo "End at ". date('Y-m-d H:i:s')."\n";
     }
 }

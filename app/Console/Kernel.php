@@ -26,8 +26,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-
-        $schedule->command('subscriptions:rebill 100')->everyFiveMinutes();
+        $log_location = storage_path("logs/scheduled.log");
+        $schedule->command('subscriptions:rebill 5')
+            ->everyFiveMinutes()
+            ->appendOutputTo($log_location);
     }
 
     /**

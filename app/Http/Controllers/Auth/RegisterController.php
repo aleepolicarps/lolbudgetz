@@ -11,6 +11,7 @@ use App\Services\UserSubscriptionsHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -63,6 +64,14 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
+    }
+
+    public function showSignup() {
+        if(Auth::check()) {
+            return redirect(route('home'));
+        } else {
+            return view('signup');
+        }
     }
 
     public function complete_signup(Request $request)
