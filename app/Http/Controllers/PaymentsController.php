@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\WebId;
+use App\RefundRequest;
 use App\Mail\SignupSuccessful;
 use App\RegisterAttempt;
 use App\Services\SaleTransactionsLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentsController extends Controller
 {
@@ -45,5 +47,20 @@ class PaymentsController extends Controller
 
         $web_id = WebId::find($sale_transaction->web_id);
         return redirect($web_id->return_url);
+    }
+
+    public function request_refund(Request $request)
+    {
+        $current_user = Auth::user();
+        if(!$current_user) {
+            abort(401, 'You are unauthorized to use this feature');
+        }
+
+        $refund_request = new RefundRequest;
+        $refund_request->user_id = $current_user->id;
+        $refund_request->details = $request->input('details');
+        $refund_request->save();
+
+        return response()->json(['status' => 'success']);
     }
 }

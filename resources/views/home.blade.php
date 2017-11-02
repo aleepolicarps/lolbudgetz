@@ -19,6 +19,27 @@
                     @if ($user_subscription->active)
                         <button class="btn btn-danger" id="unsubscibeBtn">Unsubscribe</button>
                     @endif
+                    <button class="btn" data-toggle="modal" data-target="#refundModal">Request refund</button>
+                    <!-- Modal -->
+                    <div id="refundModal" class="modal fade" role="dialog">
+                      <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Please enter details for requesting a for a refund</h4>
+                          </div>
+                          <div class="modal-body">
+                            <textarea id="refundDetails" style="width: 100%;height: 100px;border-radius: 2%;"></textarea>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="requestRefundBtn">Submit</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,5 +63,27 @@
                 }
             })
         });
+
+        $('#requestRefundBtn').click(function() {
+            var refundDetails = $('#refundDetails').val();
+            if(!refundDetails) {
+                alert('Please enter details');
+            }
+            $.ajax({
+                url: BASE_URL + '/api/request-refund',
+                method: 'POST',
+                data: {
+                    details: $('#refundDetails').val()
+                },
+                success: function() {
+                    alert('Thanks for reaching out. Your request will be processed within 24 hours');
+                    $('#refundModal').modal('hide');
+                },
+                error: function() {
+                    alert('Error encountered!');
+                }
+            });
+        });
+
     </script>
 @endsection
