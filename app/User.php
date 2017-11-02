@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\UserRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -37,5 +38,10 @@ class User extends Authenticatable
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function is_admin()
+    {
+        return $this->role == UserRoles::ADMIN;
     }
 }
