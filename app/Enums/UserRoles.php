@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UserRoles;
+namespace App\Enums;
 
 class UserRoles
 {

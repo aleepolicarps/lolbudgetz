@@ -24,4 +24,7 @@ Route::get('successful-signup', function() {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('home', 'HomeController@index')->name('home');
+
+
+Route::get('admin-panel', 'Admin\AdminPanelController@index')->name('admin_index');
