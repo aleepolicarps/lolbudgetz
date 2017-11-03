@@ -96,7 +96,7 @@ class UserSubscriptionsHandler
         $user_subscription->save();
 
         $user = $user_subscription->user()->first();
-        Mail::to($user->email_address)
+        Mail::to($user->email)
             ->send(new SubscriptionCancelled());
 
         return $user_subscription;
@@ -118,6 +118,7 @@ class UserSubscriptionsHandler
     {
         switch ($web_id->billing_period) {
             case BillingPeriod::ONE_MONTH: return date(self::DATE_FORMAT, strtotime($start_date . '+1 month'));
+            case BillingPeriod::TWO_MONTHS: return date(self::DATE_FORMAT, strtotime($start_date . '+2 months'));
         }
     }
 

@@ -66,11 +66,11 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function showSignup() {
+    public function showSignup($web_id='web_id_1') {
         if(Auth::check()) {
             return redirect(route('home'));
         } else {
-            return view('signup');
+            return view('signup', ['web_id' => $web_id]);
         }
     }
 

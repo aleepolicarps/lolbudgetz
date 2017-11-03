@@ -149,7 +149,7 @@
         window.maxpay = {
             'signature': '7bf1c227be104c6334de1bbd764a97c514178e4dca27663f2380e776c0ed6731'
         };
-        window.WEB_ID = 'web_id_1';
+        window.WEB_ID = "{{ $web_id }}";
         getWebId();
     });
     </script>
