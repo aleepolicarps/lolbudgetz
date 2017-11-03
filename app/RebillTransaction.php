@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class RebillTransaction extends Model
 {
     protected $casts = [
-        'raw_response' => 'array'
+        'raw_response' => 'array',
+        'refunded' => 'boolean'
     ];
 
     protected $dates = [

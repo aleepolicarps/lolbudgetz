@@ -4,7 +4,13 @@
 
 @section('body_content')
     <div class="container">
-        <h1>Refund Requests</h1>
+        <div class="row">
+            <h1 class="col-lg-5">Refund Requests</h1>
+            <span class="col-lg-7" style="display:flex;">
+                <input type="text" placeholder="maxpay transaction id" class="form-control" id="maxpayTransactionId">
+                <button class="btn btn-primary" id="refundBtn">refund</refund>
+            </span>
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -41,11 +47,21 @@
             </tbody>
         <table>
     </div>
+    <div id='loader' style='visibility:hidden; position: fixed;left: 0px;top: 0px;width: 100%;height: 100%;z-index: 9999;background: url(https://payment.fastbudgeting.com/img/ajax-loader.gif) 50% 50% no-repeat rgba(0,0,0,0.4);'></div>
 @endsection
 
 @section('custom_script')
     <script>
+        var showLoader = function() {
+            $('#loader').css('visibility', 'visible');
+        }
+
+        var hideLoader = function() {
+            $('#loader').css('visibility', 'hidden');
+        }
+
         window.changeStatus = function(refundRequestId, status) {
+            showLoader();
             $.ajax({
                 url: BASE_URL + '/api/refund-request-status',
                 method: 'POST',
@@ -59,8 +75,34 @@
                 },
                 error: function() {
                     alert('Error encountered!');
-                }
-            });
+                },
+                complete: hideLoader
+            })
         };
+
+        $('#refundBtn').click(function() {
+            var maxpayTransactionId = $('#maxpayTransactionId').val();
+            if(!maxpayTransactionId) {
+                alert('Please provide the transaction id.');
+                return;
+            }
+
+            showLoader();
+            $.ajax({
+                url: BASE_URL + '/api/refund',
+                method: 'POST',
+                data: {
+                    transaction_id: maxpayTransactionId
+                },
+                success: function() {
+                    alert('Transaction refunded successfully!');
+                    $('#maxpayTransactionId').val('');
+                },
+                error: function(response) {
+                    alert(response.responseJSON.message);
+                },
+                complete: hideLoader
+            });
+        });
     </script>
 @endsection
