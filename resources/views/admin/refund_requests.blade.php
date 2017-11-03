@@ -25,9 +25,9 @@
                         <td>{{ $refund_request->details }}</td>
                         <td>
                             @if($refund_request->is_pending())
-                                <button class="btn btn-default">Resolve</button>
-                                <button class="btn btn-default">Decline</button>
-                                <button class="btn btn-default">Delete</button>
+                                <button class="btn btn-default" onclick="window.changeStatus({{$refund_request->id}}, 'resolved')">Resolve</button>
+                                <button class="btn btn-default" onclick="window.changeStatus({{$refund_request->id}}, 'declined')">Decline</button>
+                                <button class="btn btn-default" onclick="window.changeStatus({{$refund_request->id}}, 'deleted')">Delete</button>
                             @else
                                 [ {{ $refund_request->get_status_as_string() }} ]
                             @endif
@@ -41,4 +41,26 @@
             </tbody>
         <table>
     </div>
+@endsection
+
+@section('custom_script')
+    <script>
+        window.changeStatus = function(refundRequestId, status) {
+            $.ajax({
+                url: BASE_URL + '/api/refund-request-status',
+                method: 'POST',
+                data: {
+                    refund_request_id: refundRequestId,
+                    status: status,
+                },
+                success: function() {
+                    alert('Request marked as '+ status + ' successfully!');
+                    window.location.reload();
+                },
+                error: function() {
+                    alert('Error encountered!');
+                }
+            });
+        };
+    </script>
 @endsection

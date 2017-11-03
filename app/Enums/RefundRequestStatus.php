@@ -18,4 +18,14 @@ class RefundRequestStatus
             case self::DELETED: return 'deleted';
         }
     }
+
+    public static function from_string($status_string)
+    {
+        switch ($status_string) {
+            case 'pending': return self::PENDING;
+            case 'resolved': return self::RESOLVED;
+            case 'declined': return self::DECLINED;
+            case 'deleted': return self::DELETED;
+        }
+    }
 }

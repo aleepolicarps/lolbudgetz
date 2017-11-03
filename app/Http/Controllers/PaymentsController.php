@@ -6,6 +6,7 @@ use App\WebId;
 use App\RefundRequest;
 use App\Mail\SignupSuccessful;
 use App\RegisterAttempt;
+use App\Enums\RefundRequestStatus;
 use App\Services\SaleTransactionsLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -53,7 +54,7 @@ class PaymentsController extends Controller
     {
         $current_user = Auth::user();
         if(!$current_user) {
-            abort(401, 'You are unauthorized to use this feature');
+            abort(401, 'You are unauthorized to use this feature.');
         }
 
         $refund_request = new RefundRequest;
@@ -62,5 +63,24 @@ class PaymentsController extends Controller
         $refund_request->save();
 
         return response()->json(['status' => 'success']);
+    }
+
+    public function change_refund_request_status(Request $request)
+    {
+        $current_user = Auth::user();
+        if(!$current_user) {
+            abort(401, 'You are unauthorized to use this feature.');
+        }
+
+        $request_refund = RefundRequest::find($request->input('refund_request_id'));
+        if(!$request_refund) {
+            abort(404, 'Refund request does not exist.');
+        }
+
+        $request_refund->status = RefundRequestStatus::from_string($request->input('status'));
+        $request_refund->save();
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }
