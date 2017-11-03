@@ -22,7 +22,7 @@
                 </div>
                 <ul class="nav navbar-nav">
                   <li><a href="{{ route('admin_index') }}">Home</a></li>
-                  <li><a href="#">Page 1</a></li>
+                  <li><a href="{{ route('admin_refund_requests') }}">Refund Requests</a></li>
                 </ul>
               </div>
             </nav>

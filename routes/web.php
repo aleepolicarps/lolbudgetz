@@ -28,3 +28,4 @@ Route::get('home', 'HomeController@index')->name('home');
 
 
 Route::get('admin-panel', 'Admin\AdminPanelController@index')->name('admin_index');
+Route::get('admin-panel/refund-requests', 'Admin\RefundRequestsController@show_refund_requests')->name('admin_refund_requests');
